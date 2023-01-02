@@ -1,6 +1,5 @@
 package com.attornatus.project.model;
 
-import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,16 +19,19 @@ public class Address {
   private String cep;
   private int number;
   private String city;
+  private boolean mainAddress;
 
   public Address() {
   }
 
-  public Address(Long id, String logradouro, String cep, int number, String city) {
+  public Address(Long id, String logradouro, String cep, int number, String city, boolean mainAddress) {
     this.id = id;
     this.logradouro = logradouro;
     this.cep = cep;
     this.number = number;
     this.city = city;
+    this.mainAddress = mainAddress;
+
   }
 
   public static long getSerialversionuid() {
@@ -74,6 +76,14 @@ public class Address {
 
   public void setCity(String city) {
     this.city = city;
+  }
+
+  public boolean isMainAddress() {
+    return mainAddress;
+  }
+
+  public void setMainAddress(boolean mainAddress) {
+    this.mainAddress = mainAddress;
   }
 
   @Override

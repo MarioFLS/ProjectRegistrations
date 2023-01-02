@@ -1,11 +1,14 @@
 package com.attornatus.project.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,13 +22,25 @@ public class People {
   private String name;
   private Date birthDate = new Date();
 
+  @OneToMany(mappedBy = "id")
+  private Set<Address> addresses = new HashSet<>();
+
+  public Set<Address> getAddresses() {
+    return addresses;
+  }
+
+  public void setAddresses(Set<Address> addresses) {
+    this.addresses = addresses;
+  }
+
   public People() {
   }
 
-  public People(Long id, String name, Date birthDate) {
+  public People(Long id, String name, Date birthDate, Set<Address> addresses) {
     this.id = id;
     this.name = name;
     this.birthDate = birthDate;
+    this.addresses = addresses;
   }
 
   public static long getSerialversionuid() {
