@@ -1,5 +1,6 @@
 package com.attornatus.project.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "people")
-public class People {
+public class People implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -76,8 +77,6 @@ public class People {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((name == null) ? 0 : name.hashCode());
-    result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
     return result;
   }
 
@@ -94,16 +93,6 @@ public class People {
       if (other.id != null)
         return false;
     } else if (!id.equals(other.id))
-      return false;
-    if (name == null) {
-      if (other.name != null)
-        return false;
-    } else if (!name.equals(other.name))
-      return false;
-    if (birthDate == null) {
-      if (other.birthDate != null)
-        return false;
-    } else if (!birthDate.equals(other.birthDate))
       return false;
     return true;
   }

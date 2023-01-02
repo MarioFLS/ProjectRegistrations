@@ -1,5 +1,7 @@
 package com.attornatus.project.model;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,7 +10,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "address")
-public class Address {
+public class Address implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -91,10 +93,6 @@ public class Address {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((logradouro == null) ? 0 : logradouro.hashCode());
-    result = prime * result + ((cep == null) ? 0 : cep.hashCode());
-    result = prime * result + number;
-    result = prime * result + ((city == null) ? 0 : city.hashCode());
     return result;
   }
 
@@ -111,23 +109,6 @@ public class Address {
       if (other.id != null)
         return false;
     } else if (!id.equals(other.id))
-      return false;
-    if (logradouro == null) {
-      if (other.logradouro != null)
-        return false;
-    } else if (!logradouro.equals(other.logradouro))
-      return false;
-    if (cep == null) {
-      if (other.cep != null)
-        return false;
-    } else if (!cep.equals(other.cep))
-      return false;
-    if (number != other.number)
-      return false;
-    if (city == null) {
-      if (other.city != null)
-        return false;
-    } else if (!city.equals(other.city))
       return false;
     return true;
   }
