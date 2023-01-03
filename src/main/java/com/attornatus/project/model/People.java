@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,10 +31,10 @@ public class People implements Serializable {
   private String name;
 
   @NotNull(message = "O Aniversário não pode ser vazio.")
-  @NotBlank(message = "O Aniversário não pode ser vazio.")
-  @JsonFormat(pattern = "dd-MM-yyyy")
+  @JsonFormat(pattern = "dd/MM/yyyy")
   private Date birthDate;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "people")
   private Set<Address> addresses = new HashSet<>();
 
