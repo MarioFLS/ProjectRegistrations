@@ -2,11 +2,17 @@ package com.attornatus.project.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "address")
@@ -16,24 +22,45 @@ public class Address implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  /* Não Descobrir como traduzir logradouro de uma boa forma */
+  /*
+   * Não Descobrir como traduzir logradouro de uma boa forma. Então deixei em
+   * português
+   */
+
   private String logradouro;
+  @NotNull(message = "O CEP não pode ser vazio.")
+  @NotBlank(message = "O CEP não pode ser vazio.")
+  @Column(unique = true, length = 8)
+  @Size(max = 8, min = 8, message = "O valor deve ser de 8 digitos.")
   private String cep;
+
+  @NotNull(message = "O Número não pode ser vazio.")
+  @NotBlank(message = "O Número não pode ser vazio.")
   private int number;
+
+  @NotNull(message = "A Cidade não pode ser vazia.")
+  @NotBlank(message = "A Cidade não pode ser vazia.")
   private String city;
-  private boolean mainAddress;
+
+  @NotNull(message = "O Endereço Principal não pode ser vazia.")
+  @NotBlank(message = "O Endereço Principal não pode ser vazia.")
+  private boolean mainAddress = false;
+
+  @ManyToOne
+  @JoinColumn(name = "people_id")
+  private People people;
 
   public Address() {
   }
 
-  public Address(Long id, String logradouro, String cep, int number, String city, boolean mainAddress) {
+  public Address(Long id, String logradouro, String cep, int number, String city, boolean mainAddress, People people) {
     this.id = id;
     this.logradouro = logradouro;
     this.cep = cep;
     this.number = number;
     this.city = city;
     this.mainAddress = mainAddress;
-
+    this.people = people;
   }
 
   public static long getSerialversionuid() {
@@ -86,6 +113,14 @@ public class Address implements Serializable {
 
   public void setMainAddress(boolean mainAddress) {
     this.mainAddress = mainAddress;
+  }
+
+  public People getPeople() {
+    return people;
+  }
+
+  public void setPeople(People people) {
+    this.people = people;
   }
 
   @Override

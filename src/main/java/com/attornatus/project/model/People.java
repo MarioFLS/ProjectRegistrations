@@ -5,12 +5,17 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "people")
@@ -20,10 +25,17 @@ public class People implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private String name;
-  private Date birthDate = new Date();
 
-  @OneToMany(mappedBy = "id")
+  @NotNull(message = "O Nome não pode ser vazio.")
+  @NotBlank(message = "O Nome não pode ser vazio.")
+  private String name;
+
+  @NotNull(message = "O Aniversário não pode ser vazio.")
+  @NotBlank(message = "O Aniversário não pode ser vazio.")
+  @JsonFormat(pattern = "dd-MM-yyyy")
+  private Date birthDate;
+
+  @OneToMany(mappedBy = "people")
   private Set<Address> addresses = new HashSet<>();
 
   public Set<Address> getAddresses() {
