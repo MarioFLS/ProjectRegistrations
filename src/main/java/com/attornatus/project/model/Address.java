@@ -2,6 +2,8 @@ package com.attornatus.project.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +30,7 @@ public class Address implements Serializable {
    */
 
   private String logradouro;
+
   @NotNull(message = "O CEP não pode ser vazio.")
   @NotBlank(message = "O CEP não pode ser vazio.")
   @Column(unique = true, length = 8)
@@ -35,7 +38,6 @@ public class Address implements Serializable {
   private String cep;
 
   @NotNull(message = "O Número não pode ser vazio.")
-  @NotBlank(message = "O Número não pode ser vazio.")
   private int number;
 
   @NotNull(message = "A Cidade não pode ser vazia.")
@@ -43,11 +45,12 @@ public class Address implements Serializable {
   private String city;
 
   @NotNull(message = "O Endereço Principal não pode ser vazia.")
-  @NotBlank(message = "O Endereço Principal não pode ser vazia.")
+  @JsonIgnore
   private boolean mainAddress = false;
 
   @ManyToOne
   @JoinColumn(name = "people_id")
+  @JsonIgnore
   private People people;
 
   public Address() {
