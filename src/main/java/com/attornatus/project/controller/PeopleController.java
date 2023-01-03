@@ -2,6 +2,7 @@ package com.attornatus.project.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.attornatus.project.model.Address;
 import com.attornatus.project.model.People;
 import com.attornatus.project.services.PeopleService;
 
@@ -70,5 +72,40 @@ public class PeopleController {
   public ResponseEntity<Void> delete(@PathVariable Long id) {
     service.delete(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping(value = "/{id}/address")
+  public ResponseEntity<Address> addAddress(@PathVariable Long id, @RequestBody Address entity) {
+    Address address = service.addAddress(id, entity);
+    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+        .buildAndExpand(address.getId()).toUri();
+    return ResponseEntity.created(uri).body(address);
+  }
+
+  @GetMapping(value = "/{id}/address")
+  public ResponseEntity<Set<Address>> findAddress(@PathVariable Long id) {
+    Set<Address> addresses = service.findAllAddress(id);
+    if (addresses.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok().body(addresses);
+  }
+
+  @PutMapping(value = "/{id}/address/{idAddress}")
+  public ResponseEntity<Void> setMainAddress(@PathVariable Long id, @PathVariable Long idAddress) {
+    Address addresses = service.setMainAddress(id, idAddress);
+    if (addresses == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(null);
+  }
+
+  @GetMapping("/{id}/address/main")
+  public ResponseEntity<Address> findAddressMain(@PathVariable Long id) {
+    Address addresses = service.getAddressMain(id);
+    if (addresses == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok().body(addresses);
   }
 }
